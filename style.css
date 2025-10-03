@@ -16,11 +16,7 @@ body {
     height: 100%;
     background: linear-gradient(135deg, #627eda 0%, #5b265f 100%);
     z-index: -1;
-}
-
-@keyframes background-move {
-    0% { background-size: 100% 100%; }
-    100% { background-size: 150% 150%; }
+    animation: background-move 8s infinite alternate;
 }
 
 .glass-card {
@@ -28,8 +24,8 @@ body {
     padding: 40px;
     border-radius: 20px;
     background: rgba(255, 255, 255, 0.15); 
-    backdrop-filter: blur(10px); 
-    -webkit-backdrop-filter: blur(10px); 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     text-align: center;

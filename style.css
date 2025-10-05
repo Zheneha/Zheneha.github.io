@@ -34,6 +34,7 @@ body {
     color: #ffffff;
     background: linear-gradient(135deg, hsl(232 30% 25% / 1) 0%, hsl(299 25% 20% / 1) 100%);
     background-attachment: fixed;
+    padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -74,12 +75,12 @@ body {
     display: block;
 }
 .profile h1 {
-    font-size: 2em;
+    font-size: 2rem;
     font-weight: bold;
     line-height: 1.2;
 }
 .profile p {
-    font-size: 1em;
+    font-size: 1rem;
     line-height: 1.6;
     color: #b0c4de;
 }
@@ -103,7 +104,7 @@ body {
     color: #ffffff;
     padding: 15px 20px;
     border-radius: 15px;
-    font-size: 1.4em;
+    font-size: 1.3rem;
     transition: all 0.2s ease;
     backdrop-filter: blur(var(--glass-blur-btn));
     border: 0.5px solid var(--glass-border);
@@ -113,9 +114,9 @@ body {
 /* アイコン共通スタイル */
 .link-button i {
     color: transparent;
-    font-size: 1.4em; 
-    width: 1.4em;
-    height: 1.4em;
+    font-size: 2rem;
+    width: 2rem;
+    height: 2rem;
     display: inline-block; 
     
     /* すべての画像アイコンの共通設定 */

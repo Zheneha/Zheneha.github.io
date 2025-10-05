@@ -24,7 +24,7 @@
     --glass-blur-btn: 11px;
 
     /* 透明度制御 */
-    --alpha-btn-base: 15%; 
+    --alpha-btn-base: 20%; 
     --alpha-btn-hover: 40%; 
     
     /* テキストカラー */
@@ -101,7 +101,7 @@ body {
     /* デフォルトのテーマ色 */
     --btn-theme-color: var(--color-theme-custom-1); 
     
-    background: color-mix(in srgb,
+    background: color-mix(in rgba,
         var(--btn-theme-color) var(--alpha-btn-base),
         transparent
     );

@@ -1,64 +1,168 @@
+/* リセットスタイル */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    box-sizing: border-box;
+}
+
+/* カスタムプロパティ (変数) */
+:root {
+    /* テーマカラー */
+    --color-x: #42aaff;
+    --color-honi: #77b58c;
+    --color-misskey: #86b300;
+    --color-custom: #ffffff;
+    
+    /* グラスモーフィズム基本色 */
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-blur-main: 8px;
+    --glass-blur-btn: 11px;
+
+    /* ボタンの透明度制御 */
+    --btn-alpha: 15%; 
+    --btn-hover-alpha: 40%; 
+    
+    /* 初期テーマカラー (ボタン共通) */
+    --btn-theme-color: #ffffff;
+}
+
+/* 共通スタイル */
 body {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: #ffffff;
+    background: linear-gradient(135deg, hsl(232 30% 25% / 1) 0%, hsl(299 25% 20% / 1) 100%);
+    background-attachment: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    margin: 0;
-    color: #fff;
-    overflow: hidden;
 }
 
-.background {
-    position: absolute;
-    top: 0;
-    left: 0;
+/* メインコンテナ */
+.main-content {
     width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #627eda 0%, #5b265f 100%);
-    z-index: -1;
-    animation: background-move 8s infinite alternate;
-}
-
-.glass-card {
-    width: 350px;
+    max-width: 600px;
     padding: 40px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.15); 
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 25px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur-main));
+    -webkit-backdrop-filter: blur(var(--glass-blur-main));
+    border: 0.5px solid var(--glass-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* プロフィールエリア */
+.profile {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
-
-.glass-card h1 {
+.avatar {
+    display: flex;
+    justify-content: center;
+}
+.avatar img {
+    width: 400px;
+    height: auto;
+    max-width: 100%;
+    display: block;
+}
+.profile h1 {
     font-size: 2em;
-    font-weight: 600;
-    margin-bottom: 0.5em;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    line-height: 1.2;
 }
-
-.glass-card p {
-    font-weight: 300;
-    margin-bottom: 20px;
-}
-
-.glass-button {
-    padding: 10px 10px;
+.profile p {
     font-size: 1em;
-    font-weight: 400;
-    cursor: pointer;
-    border-radius: 10px;
-    border: none;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    color: #fff;
-    transition: all 0.3s ease;
+    line-height: 1.6;
+    color: #b0c4de;
+}
+.links-box {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.glass-button:hover {
-    background: rgba(255, 255, 255, 0.35);
-    transform: scale(1.2);
+/* リンクボタン共通スタイル */
+.link-button {
+    background: color-mix(in srgb,
+        var(--btn-theme-color) var(--btn-alpha),
+        transparent
+    );
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    text-decoration: none;
+    color: #ffffff;
+    padding: 15px 20px;
+    border-radius: 15px;
+    font-weight: 700;
+    font-size: 1.4em;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(var(--glass-blur-btn));
+    border: 0.5px solid var(--glass-border);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* アイコン共通スタイル */
+.link-button i {
+    color: transparent;
+    font-size: 1.4em; 
+    width: 1.4em;
+    height: 1.4em;
+    display: inline-block; 
+    
+    /* すべての画像アイコンの共通設定 */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* ホバーエフェクト */
+.link-button:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    background: color-mix(in srgb,
+        var(--btn-theme-color) var(--btn-hover-alpha),
+        transparent
+    );
+}
+
+/* 各SNSのカラー設定 */
+.x-link {
+    --btn-theme-color: var(--color-x);
+}
+.honi-club-link {
+    --btn-theme-color: var(--color-honi);
+}
+.misskey-link {
+    --btn-theme-color: var(--color-misskey);
+}
+.custom-link-1 {
+    --btn-theme-color: var(--color-custom);
+}
+
+/* --- 画像アイコンの適用 --- */
+
+.x-link i {
+    background-image: url('https://about.x.com/content/dam/about-twitter/x/brand-toolkit/logo-black.png.twimg.1920.png');
+}
+
+.honi-club-link i {
+    background-image: url('https://proxy.misskeyusercontent.jp/preview/media.honi.club%2Ffiles%2F0cc9b093-7108-424d-a629-d435636a8ffa.png');
+}
+
+.misskey-link i {
+    background-image: url('https://proxy.misskeyusercontent.jp/preview/s3.arkjp.net%2Fmisskey%2Fwebpublic-0c66b1ca-b8c0-4eaa-9827-47674f4a1580.png');
+}
+
+.custom-link-1 i {
+    background-image: url('');
 }

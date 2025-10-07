@@ -5,7 +5,7 @@
     padding: 0;
     box-sizing: border-box;
     line-height: 1;
-    --font-color: #e6e6e6;
+    --font-color: #dbdbdb;
 }
 
 body {
@@ -14,9 +14,10 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
-    padding: 40px 16px 80px; /* フッターの分のスペースを空ける */
+    padding: 16px;
+    position: relative;
+    z-index: 1;
 }
 
 .wrapper {
@@ -26,10 +27,11 @@ body {
     gap: 24px;
     max-width: 1100px;
     width: 100%;
-    margin: auto;
     grid-template-areas: 
         "links card-a"
         "links card-b";
+    z-index: 2;
+    margin: auto;
 }
 
 .container {
@@ -40,7 +42,7 @@ body {
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.08);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(4px);
     border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
@@ -125,7 +127,7 @@ body {
 .link-name {
     font-size: 1.1rem;
     font-weight: bold;
-    color: #fff;
+    color: var(--font-color);
 }
 
 .link-id {
@@ -133,7 +135,7 @@ body {
     color: #bbb;
 }
 
-.right-card-a p {
+.container p {
     font-size: 1.2rem;
     line-height: 1.2;
     color: var(--font-color);
@@ -159,4 +161,28 @@ body {
     .container {
         flex: 1 1 auto; 
     }
+}
+
+
+/* 動く背景画像の設定 (DVDロゴ風 - ランダムバウンス) */
+.moving-image {
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    width: auto; 
+    height: auto;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.2; 
+    z-index: -1; 
+    pointer-events: none;
+    will-change: transform;
+}
+
+.first-image {
+    background-image: url('https://media.honi.club/files/fec3ead4-17c5-4133-9e53-754043785af8.png'); 
+}
+
+.second-image {
+    background-image: url('https://media.honi.club/files/45cdb841-31ad-47e3-a99e-ea33c9b948f8.png'); 
 }

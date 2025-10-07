@@ -8,43 +8,37 @@
 
 /* カスタムプロパティ (変数) */
 :root {
-    /* テーマカラー (16進数) */
-    --color-theme-x: #000000;
-    --color-theme-honi: #77b58c;
-    --color-theme-misskey: #86b300;
-    --color-theme-custom-1: #ffffff;
-    --color-theme-custom-2: #808080;
-    --color-theme-custom-3: #56a5e1;
-    --color-theme-custom-4: #ff69b4;
+    /* テーマカラー */
+    --color-x: #42aaff;
+    --color-honi: #77b58c;
+    --color-misskey: #86b300;
+    --color-custom: #ffffff;
     
-    /* グラスモーフィズム */
-    --glass-bg-base: rgba(255, 255, 255, 0.03);
-    --glass-border-color: rgba(255, 255, 255, 0.15);
+    /* グラスモーフィズム基本色 */
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.15);
     --glass-blur-main: 8px;
     --glass-blur-btn: 11px;
 
-    /* 透明度制御 */
-    --alpha-btn-base: 20%; 
-    --alpha-btn-hover: 40%; 
+    /* ボタンの透明度制御 */
+    --btn-alpha: 15%; 
+    --btn-hover-alpha: 40%; 
     
-    /* テキストカラー */
-    --color-text-light: #ffffff;
-    --color-text-sub: #b0c4de;
-    --color-background-gradient: linear-gradient(135deg, #372a4d 0%, #3d2a4d 100%);
+    /* 初期テーマカラー (ボタン共通) */
+    --btn-theme-color: #ffffff;
 }
 
 /* 共通スタイル */
 body {
     font-family: 'M PLUS Rounded 1c', sans-serif;
-    color: var(--color-text-light);
-    background: var(--color-background-gradient);
+    color: #ffffff;
+    background: linear-gradient(135deg, hsl(232 30% 25% / 1) 0%, hsl(299 25% 20% / 1) 100%);
     background-attachment: fixed;
     padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    font-weight: 400;
 }
 
 /* メインコンテナ */
@@ -53,10 +47,10 @@ body {
     max-width: 600px;
     padding: 40px;
     border-radius: 25px;
-    background: var(--glass-bg-base);
+    background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur-main));
     -webkit-backdrop-filter: blur(var(--glass-blur-main));
-    border: 0.5px solid var(--glass-border-color);
+    border: 0.5px solid var(--glass-border);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     display: flex;
     flex-direction: column;
@@ -82,13 +76,13 @@ body {
 }
 .profile h1 {
     font-size: 2rem;
-    font-weight: 700;
+    font-weight: bold;
     line-height: 1.2;
 }
 .profile p {
     font-size: 1rem;
     line-height: 1.6;
-    color: var(--color-text-sub);
+    color: #b0c4de;
 }
 .links-box {
     display: flex;
@@ -98,47 +92,23 @@ body {
 
 /* リンクボタン共通スタイル */
 .link-button {
-    /* デフォルトのテーマ色 */
-    --btn-theme-color: var(--color-theme-custom-1); 
-    
-    background: color-mix(in rgba,
-        var(--btn-theme-color) var(--alpha-btn-base),
+    background: color-mix(in srgb,
+        var(--btn-theme-color) var(--btn-alpha),
         transparent
     );
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* 左寄せに変更 */
+    gap: 10px;
+    justify-content: center;
     text-decoration: none;
-    color: var(--color-text-light);
+    color: #ffffff;
     padding: 15px 20px;
     border-radius: 15px;
-    font-size: 1.1rem; /* 少し小さく調整 */
+    font-size: 1.3rem;
     transition: all 0.2s ease;
     backdrop-filter: blur(var(--glass-blur-btn));
-    border: 0.5px solid var(--glass-border-color);
+    border: 0.5px solid var(--glass-border);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-}
-
-/* リンク内のテキストコンテナ */
-.link-texts {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* テキストを左寄せ */
-    margin-left: 10px; /* アイコンとの間に隙間 */
-}
-
-/* リンクのタイトル */
-.link-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--btn-theme-color); /* テーマ色を適用 */
-}
-
-/* リンクのアカウントID/説明 */
-.link-id {
-    font-size: 0.85rem;
-    color: var(--color-text-sub);
-    line-height: 1.4;
 }
 
 /* アイコン共通スタイル */
@@ -147,8 +117,9 @@ body {
     font-size: 2rem;
     width: 2rem;
     height: 2rem;
-    flex-shrink: 0; /* 縮小させない */
+    display: inline-block; 
     
+    /* すべての画像アイコンの共通設定 */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -159,39 +130,29 @@ body {
     transform: translateY(-3px) scale(1.01);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     background: color-mix(in srgb,
-        var(--btn-theme-color) var(--alpha-btn-hover),
+        var(--btn-theme-color) var(--btn-hover-alpha),
         transparent
     );
 }
 
 /* 各SNSのカラー設定 */
 .x-link {
-    --btn-theme-color: var(--color-theme-x);
+    --btn-theme-color: var(--color-x);
 }
 .honi-club-link {
-    --btn-theme-color: var(--color-theme-honi);
+    --btn-theme-color: var(--color-honi);
 }
 .misskey-link {
-    --btn-theme-color: var(--color-theme-misskey);
+    --btn-theme-color: var(--color-misskey);
 }
 .custom-link-1 {
-    --btn-theme-color: var(--color-theme-custom-1);
-}
-.custom-link-2 {
-    --btn-theme-color: var(--color-theme-custom-2);
-}
-.custom-link-3 {
-    --btn-theme-color: var(--color-theme-custom-3);
-}
-.custom-link-4 {
-    --btn-theme-color: var(--color-theme-custom-4);
+    --btn-theme-color: var(--color-custom);
 }
 
-/* --- 画像アイコンの適用 (外部URLを使用) --- */
+/* --- 画像アイコンの適用 --- */
 
 .x-link i {
-    /* Xアイコンは黒なので、ボタンの背景が暗いため白の画像に置き換え */
-    background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Logo_x_white.svg/1024px-Logo_x_white.svg.png');
+    background-image: url('https://about.x.com/content/dam/about-twitter/x/brand-toolkit/logo-black.png.twimg.1920.png');
 }
 
 .honi-club-link i {
@@ -202,7 +163,6 @@ body {
     background-image: url('https://proxy.misskeyusercontent.jp/preview/s3.arkjp.net%2Fmisskey%2Fwebpublic-0c66b1ca-b8c0-4eaa-9827-47674f4a1580.png');
 }
 
-/* カスタムリンクは必要に応じて画像のURLを設定してください */
 .custom-link-1 i {
-    /* 例: Font Awesomeのアイコンを使用しない場合 */
+    background-image: url('');
 }

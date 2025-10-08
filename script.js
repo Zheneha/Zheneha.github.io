@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const initialVY = (Math.random() < 0.5 ? 1 : -1) * speed;
 
         const initialRotation = Math.random() * 360;
-        const rotationSpeed = (Math.random() * 2 - 1) * 0.7; // 初期回転速度
+        const rotationSpeed = (Math.random() * 2 - 1) * 6; // 初期回転速度
 
         image.style.width = `${currentSize}px`;
         image.style.height = `${currentSize}px`;
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 境界衝突時に回転速度と方向をランダムに変化
             if (collided) {
-                state.rotationSpeed = (Math.random() * 2 - 1) * 1.0; 
+                state.rotationSpeed = (Math.random() * 2 - 1) * 16; 
             }
 
             // CSSの更新

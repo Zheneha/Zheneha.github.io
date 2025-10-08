@@ -118,6 +118,8 @@ body {
 .discord-link .icons { background: #5865F2; }
 .steam-link .icons { background: #1b2838; }
 .custom-link .icons { background: #757575; }
+.cosense-link .icons { background: #ffb300; }
+.pixiv-link .icons { background: #0096fa; }
 
 .link-text {
     display: flex;
@@ -189,5 +191,4 @@ body {
 
 .second-image {
     background-image: url('https://media.honi.club/files/45cdb841-31ad-47e3-a99e-ea33c9b948f8.png'); 
-
 }

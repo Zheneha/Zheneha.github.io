@@ -1,24 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
     const images = document.querySelectorAll('.moving-image');
     const container = document.body;
-    const speed = 7.0; // 移動速度
+    const baseSpeed = 7.0; // 元の速度を維持
 
-    // 現在の画面幅に基づいて画像のサイズを決定する (960px以下で200px、それ以外で300px)
-    const determineSize = () => window.innerWidth <= 960 ? 200 : 300; 
+    // 画面サイズに応じた画像サイズ計算
+    const determineSize = () => window.innerWidth <= 960 ? 200 : 300;
 
     let currentSize = determineSize();
-    
-    // 画像の状態を初期化する
-    const imageStates = Array.from(images).map((image) => {
-        
-        const initialX = Math.random() * (container.clientWidth - currentSize);
-        const initialY = Math.random() * (container.clientHeight - currentSize);
-        
-        const initialVX = (Math.random() < 0.5 ? 1 : -1) * speed;
-        const initialVY = (Math.random() < 0.5 ? 1 : -1) * speed;
 
+    // 画像の状態管理
+    const imageStates = Array.from(images).map((image) => {
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight;
+
+        // 初期位置（端に寄らないように調整）
+        const initialX = Math.random() * (containerWidth - currentSize - 40) + 20;
+        const initialY = Math.random() * (containerHeight - currentSize - 40) + 20;
+
+        // 初期速度（±baseSpeedの範囲）
+        const vx = (Math.random() < 0.5 ? 1 : -1) * baseSpeed;
+        const vy = (Math.random() < 0.5 ? 1 : -1) * baseSpeed;
+
+        // 回転（滑らかさを考慮して低速に）
         const initialRotation = Math.random() * 360;
-        const rotationSpeed = (Math.random() * 2 - 1) * 6; // 初期回転速度
+        const rotationSpeed = (Math.random() < 0.5 ? 1 : -1) * (0.5 + Math.random() * 0.5); // 0.5〜1.0度/フレーム
 
         image.style.width = `${currentSize}px`;
         image.style.height = `${currentSize}px`;
@@ -28,17 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
             element: image,
             x: initialX,
             y: initialY,
-            vx: initialVX,
-            vy: initialVY,
+            vx: vx,
+            vy: vy,
             rotation: initialRotation,
             rotationSpeed: rotationSpeed,
             size: currentSize,
         };
     });
 
-    /**
-     * 画面サイズ変更時に画像のサイズと位置を更新する
-     */
+    // 画面リサイズ時の処理
     const updateImageDimensions = () => {
         const newSize = determineSize();
         if (newSize === currentSize) return;
@@ -47,73 +50,77 @@ document.addEventListener('DOMContentLoaded', () => {
         currentSize = newSize;
 
         imageStates.forEach(state => {
+            const oldX = state.x;
+            const oldY = state.y;
+
             state.size = newSize;
-            
-            // サイズ変更に伴う位置補正 (画面外に出ないように調整)
-            state.x = Math.min(state.x * newSize / oldSize, container.clientWidth - newSize);
-            state.y = Math.min(state.y * newSize / oldSize, container.clientHeight - newSize);
-            state.x = Math.max(state.x, 0);
-            state.y = Math.max(state.y, 0);
+
+            // サイズ変更後の位置を計算（中央寄せを維持しつつ、画面外に出ないように）
+            state.x = Math.min(oldX * newSize / oldSize, container.clientWidth - newSize - 10);
+            state.y = Math.min(oldY * newSize / oldSize, container.clientHeight - newSize - 10);
+            state.x = Math.max(state.x, 10);
+            state.y = Math.max(state.y, 10);
         });
     };
-    
-    /**
-     * アニメーションループ内で各画像の動きを計算・適用する
-     */
+
+    // アニメーションループ
     function animate() {
         const containerWidth = container.clientWidth;
         const containerHeight = container.clientHeight;
 
         imageStates.forEach(state => {
-            // 位置と回転角度の更新
+            // 位置更新
             state.x += state.vx;
             state.y += state.vy;
+
+            // 回転更新
             state.rotation += state.rotationSpeed;
-            state.rotation %= 360; 
 
-            // 境界チェックと跳ね返り
-            let collided = false;
-            
-            if (state.x + state.size > containerWidth || state.x < 0) {
-                state.vx *= -1; 
-                state.x = state.x < 0 ? 0 : containerWidth - state.size; 
-                collided = true;
+            // 境界チェックと跳ね返り（滑らかな補正付き）
+            let bounced = false;
+
+            if (state.x <= 0 || state.x + state.size >= containerWidth) {
+                state.vx *= -1;
+                state.x = state.x <= 0 ? 0 : containerWidth - state.size;
+                bounced = true;
             }
 
-            if (state.y + state.size > containerHeight || state.y < 0) {
+            if (state.y <= 0 || state.y + state.size >= containerHeight) {
                 state.vy *= -1;
-                state.y = state.y < 0 ? 0 : containerHeight - state.size; 
-                collided = true;
+                state.y = state.y <= 0 ? 0 : containerHeight - state.size;
+                bounced = true;
             }
 
-            // 境界衝突時に回転速度と方向をランダムに変化
-            if (collided) {
-                state.rotationSpeed = (Math.random() * 2 - 1) * 16; 
+            // 跳ね返り時に軽微な速度変化（±20%）
+            if (bounced) {
+                const variation = 0.8 + Math.random() * 0.4; // 0.8〜1.2
+                state.vx = (state.vx > 0 ? 1 : -1) * baseSpeed * variation;
+                state.vy = (state.vy > 0 ? 1 : -1) * baseSpeed * variation;
             }
 
-            // CSSの更新
+            // CSS変換を適用
             state.element.style.transform = `translate(${state.x}px, ${state.y}px) rotate(${state.rotation}deg)`;
         });
 
         requestAnimationFrame(animate);
     }
 
-    // イベントリスナーの設定
+    // イベントリスナー設定
     window.addEventListener('resize', () => {
-        // サイズ変更時の処理
         updateImageDimensions();
-        
-        // リサイズ後の位置補正
+
+        // リサイズ後の位置確認（画面外防止）
+        const containerWidth = container.clientWidth;
+        const containerHeight = container.clientHeight;
+
         imageStates.forEach(state => {
-            const containerWidth = container.clientWidth;
-            const containerHeight = container.clientHeight;
-            // 画面外に出ていれば補正
-            if (state.x + state.size > containerWidth) state.x = containerWidth - state.size;
-            if (state.x < 0) state.x = 0;
-            if (state.y + state.size > containerHeight) state.y = containerHeight - state.size;
-            if (state.y < 0) state.y = 0;
+            if (state.x + state.size > containerWidth) state.x = containerWidth - state.size - 10;
+            if (state.x < 0) state.x = 10;
+            if (state.y + state.size > containerHeight) state.y = containerHeight - state.size - 10;
+            if (state.y < 0) state.y = 10;
         });
     });
 
+    // アニメーション開始
     animate();
 });

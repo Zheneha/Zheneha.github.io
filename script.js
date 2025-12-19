@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const vx = (Math.random() < 0.5 ? 1 : -1) * baseSpeed;
         const vy = (Math.random() < 0.5 ? 1 : -1) * baseSpeed;
 
-        // 回転（滑らかさを考慮して低速に）
+        // 回転速度（元のコードに近い範囲で）
         const initialRotation = Math.random() * 360;
-        const rotationSpeed = (Math.random() < 0.5 ? 1 : -1) * (0.5 + Math.random() * 0.5); // 0.5〜1.0度/フレーム
+        const rotationSpeed = (Math.random() * 2 - 1) * 6; // -6〜6度/フレーム
 
         image.style.width = `${currentSize}px`;
         image.style.height = `${currentSize}px`;
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             state.size = newSize;
 
-            // サイズ変更後の位置を計算（中央寄せを維持しつつ、画面外に出ないように）
+            // サイズ変更後の位置を計算
             state.x = Math.min(oldX * newSize / oldSize, container.clientWidth - newSize - 10);
             state.y = Math.min(oldY * newSize / oldSize, container.clientHeight - newSize - 10);
             state.x = Math.max(state.x, 10);
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // 回転更新
             state.rotation += state.rotationSpeed;
 
-            // 境界チェックと跳ね返り（滑らかな補正付き）
+            // 境界チェックと跳ね返り
             let bounced = false;
 
             if (state.x <= 0 || state.x + state.size >= containerWidth) {
@@ -91,11 +91,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 bounced = true;
             }
 
-            // 跳ね返り時に軽微な速度変化（±20%）
+            // 跳ね返り時に速度と回転をランダム変動（元のコードの挙動を再現）
             if (bounced) {
-                const variation = 0.8 + Math.random() * 0.4; // 0.8〜1.2
-                state.vx = (state.vx > 0 ? 1 : -1) * baseSpeed * variation;
-                state.vy = (state.vy > 0 ? 1 : -1) * baseSpeed * variation;
+                // 速度変動（±30%）
+                const speedVariation = 0.7 + Math.random() * 0.6; // 0.7〜1.3
+                state.vx = (state.vx > 0 ? 1 : -1) * baseSpeed * speedVariation;
+                state.vy = (state.vy > 0 ? 1 : -1) * baseSpeed * speedVariation;
+
+                // 回転速度のランダム変動（元の±16より控えめに）
+                state.rotationSpeed = (Math.random() * 2 - 1) * 8; // -8〜8度/フレーム
             }
 
             // CSS変換を適用
